@@ -1,9 +1,10 @@
-Error code=-17
+Error code=-13
 
 Deal data:
-trump=H
+trump=S
 first=N
-index1=0 index2=0 remainCards=1108
+index=0 currentTrickSuit=D currentTrickRank= A
+index1=0 index2=0 remainCards=84
 index1=0 index2=1 remainCards=8704
 index1=0 index2=2 remainCards=25668
 index1=0 index2=3 remainCards=260
@@ -20,12 +21,12 @@ index1=3 index2=1 remainCards=20496
 index1=3 index2=2 remainCards=560
 index1=3 index2=3 remainCards=16968
 
-target=-1
+target=1
 solutions=1
-mode=3
+mode=0
 
 
-        S T642
+        S 642
         H K9
         D AKT62
         C 82

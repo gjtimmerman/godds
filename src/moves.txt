@@ -1,0 +1,104 @@
+Turn: 0, 0
+DA
+Turn: 0, 1
+D3
+Turn: 0, 2
+D7
+Turn: 0, 3
+D5
+Turn: 1, 0
+D2
+Turn: 1, 1
+D8
+Turn: 1, 2
+DQ
+Turn: 1, 3
+D4
+Turn: 2, 0
+SA
+Turn: 2, 1
+S5
+Turn: 2, 2
+S2
+Turn: 2, 3
+S8
+Turn: 3, 0
+H5
+Turn: 3, 1
+HA
+Turn: 3, 2
+H9
+Turn: 3, 3
+H3
+Turn: 4, 0
+S9
+Turn: 4, 1
+ST
+Turn: 4, 2
+SQ
+Turn: 4, 3
+S3
+Turn: 5, 0
+S7
+Turn: 5, 1
+SJ
+Turn: 5, 2
+SK
+Turn: 5, 3
+S6
+Turn: 6, 0
+H4
+Turn: 6, 1
+HK
+Turn: 6, 2
+H2
+Turn: 6, 3
+H8
+Turn: 7, 0
+DK
+Turn: 7, 1
+DJ
+Turn: 7, 2
+C5
+Turn: 7, 3
+D9
+Turn: 8, 0
+C2
+Turn: 8, 1
+C4
+Turn: 8, 2
+CK
+Turn: 8, 3
+CA
+Turn: 9, 0
+HQ
+Turn: 9, 1
+S4
+Turn: 9, 2
+HT
+Turn: 9, 3
+HJ
+Turn: 10, 0
+C8
+Turn: 10, 1
+C7
+Turn: 10, 2
+CQ
+Turn: 10, 3
+C6
+Turn: 11, 0
+CJ
+Turn: 11, 1
+C9
+Turn: 11, 2
+DT
+Turn: 11, 3
+H7
+Turn: 12, 0
+CT
+Turn: 12, 1
+C3
+Turn: 12, 2
+D6
+Turn: 12, 3
+H6

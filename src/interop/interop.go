@@ -19,11 +19,11 @@ const (
 )
 
 const (
-	NOTRUMP = iota
-	SPADES
+	SPADES = iota
 	HEARTHS
 	DIAMONDS
 	CLUBS
+	NOTRUMP
 )
 
 type DealPBN struct {
