@@ -47,9 +47,8 @@ func removeCard(remaining *[4][]byte, player int, suit int32, rank int32) {
 	}
 	cardPosition := slices.Index(remaining[player][start:], convertRankToChar(rank))
 	cardPosition += start
-	oldhand := remaining[player]
-	remaining[player] = remaining[player][:cardPosition]
-	remaining[player] = append(remaining[player], oldhand[cardPosition+1:]...)
+	copy(remaining[player][cardPosition:], remaining[player][cardPosition+1:])
+	remaining[player] = remaining[player][:len(remaining[player])-1]
 }
 
 func evaluateWinner(currentTrickSuit []int32, currentTrickRank []int32, winnerSoFar int, trumpSuit int32, suit int32, rank int32, currentTrickSequence int) int {
@@ -127,7 +126,7 @@ func main() {
 				fmt.Printf("Error: %d", int32(ret))
 				return
 			}
-			println(tricks.Score[0])
+			//			println(tricks.Score[0])
 			//			for i := 0; i < int(tricks.Cards); i++ {
 			fmt.Printf("%c", convertSuitToChar(tricks.Suit[0]))
 			fmt.Printf("%c\n", convertRankToChar(tricks.Rank[0]))
