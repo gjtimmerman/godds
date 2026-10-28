@@ -192,20 +192,24 @@ func solvedeal(ctx uintptr, first int32, trump int32, remaincards []byte) (playe
 	return
 }
 
+func printsolveddeal(playedDeal PlayedDeal) {
+	fmt.Printf("Tricks won by NS: %d, EW: %d\n", playedDeal.TricksWon[NS], playedDeal.TricksWon[EW])
+	for i, t := range playedDeal.Tricks {
+		fmt.Printf("%d: Lead: %c, Winner: %c\n", i, convertHandToChar(t.Lead), convertHandToChar(t.Winner))
+		for _, c := range t.PlayedCards {
+			fmt.Printf("%c%c ", convertSuitToChar(c.Suit), convertRankToChar(c.Rank))
+		}
+		fmt.Println()
+	}
+}
+
 func main() {
 	ctx := interop.CreateSolverContext()
 	var remaincards []byte = []byte("N:T642.K9.AKT62.82 Q87.T7632.J83.74 AJ3.J85.Q7.KQJT5 K95.AQ4.954.A963")
-	playedDeal, err := solvedeal(ctx, interop.NORTH, interop.SPADES, remaincards)
+	playedDeal, err := solvedeal(ctx, interop.EAST, interop.SPADES, remaincards)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
-		fmt.Printf("Tricks won by NS: %d, EW: %d\n", playedDeal.TricksWon[NS], playedDeal.TricksWon[EW])
-		for i, t := range playedDeal.Tricks {
-			fmt.Printf("%d: Lead: %c, Winner: %c\n", i, convertHandToChar(t.Lead), convertHandToChar(t.Winner))
-			for _, c := range t.PlayedCards {
-				fmt.Printf("%c%c ", convertSuitToChar(c.Suit), convertRankToChar(c.Rank))
-			}
-			fmt.Println()
-		}
+		printsolveddeal(playedDeal)
 	}
 }
