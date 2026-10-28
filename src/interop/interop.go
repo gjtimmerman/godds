@@ -5,11 +5,15 @@ import (
 	"unsafe"
 )
 
+const NUMBEROFPLAYERS = 4
+
 const MAXNOOFBOARDS int32 = 200
 
 const NUMBEROFTRICKS int32 = 13
 
 const RETURN_NO_FAULT uintptr = 1
+
+const MAX_REMAIN_CARDS = 80
 
 const (
 	NORTH = iota
@@ -31,7 +35,7 @@ type DealPBN struct {
 	First            int32
 	CurrentTrickSuit [3]int32
 	CurrentTrickRank [3]int32
-	RemainCards      [80]byte
+	RemainCards      [MAX_REMAIN_CARDS]byte
 }
 
 type FutureTricks struct {
