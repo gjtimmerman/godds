@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"godds/interop"
+	"io"
+	"os"
 	"slices"
 )
 
@@ -53,6 +56,22 @@ func convertHandToChar(h int) uint8 {
 		return 'S'
 	case interop.WEST:
 		return 'W'
+	}
+	return 0
+}
+
+func convertStrainToChar(s int) uint8 {
+	switch s {
+	case interop.SPADES:
+		return 'S'
+	case interop.HEARTHS:
+		return 'H'
+	case interop.DIAMONDS:
+		return 'D'
+	case interop.CLUBS:
+		return 'C'
+	case interop.NOTRUMP:
+		return 'N'
 	}
 	return 0
 }
@@ -188,28 +207,90 @@ func solvedeal(ctx uintptr, first int32, trump int32, remaincards []byte) (playe
 		} else {
 			playedDeal.TricksWon[EW]++
 		}
+		for i := range 3 {
+			deal.CurrentTrickSuit[i] = 0
+			deal.CurrentTrickRank[i] = 0
+		}
 	}
 	return
 }
 
-func printsolveddeal(playedDeal PlayedDeal) {
-	fmt.Printf("Tricks won by NS: %d, EW: %d\n", playedDeal.TricksWon[NS], playedDeal.TricksWon[EW])
+func printsolveddeal(w io.Writer, playedDeal PlayedDeal) {
+	fmt.Fprintf(w, "Tricks won by NS: %d, EW: %d\n", playedDeal.TricksWon[NS], playedDeal.TricksWon[EW])
 	for i, t := range playedDeal.Tricks {
-		fmt.Printf("%d: Lead: %c, Winner: %c\n", i, convertHandToChar(t.Lead), convertHandToChar(t.Winner))
+		fmt.Fprintf(w, "%d: Lead: %c, Winner: %c\n", i, convertHandToChar(t.Lead), convertHandToChar(t.Winner))
 		for _, c := range t.PlayedCards {
-			fmt.Printf("%c%c ", convertSuitToChar(c.Suit), convertRankToChar(c.Rank))
+			fmt.Fprintf(w, "%c%c ", convertSuitToChar(c.Suit), convertRankToChar(c.Rank))
 		}
-		fmt.Println()
+		fmt.Fprintln(w)
+	}
+}
+
+func solveBoard(cards string) {
+	ctx := interop.CreateSolverContext()
+	var remaincards []byte = []byte(cards)
+	playedDeal, err := solvedeal(ctx, interop.SOUTH, interop.HEARTHS, remaincards)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		f, err := os.Create("moves.txt")
+		if err == nil {
+			defer f.Close()
+			printsolveddeal(f, playedDeal)
+		}
+	}
+
+}
+
+func readPBN(r io.Reader) (boards interop.DdTableDealsPBN) {
+	reader := bufio.NewReader(r)
+	var count int32 = 0
+	for str, err := reader.ReadString('\n'); err == nil; str, err = reader.ReadString('\n') {
+		if len(str) >= 6 && str[:6] == "[Deal " {
+			copy(boards.Deals[count].Cards[:], str[7:len(str)-4])
+			count++
+		} else {
+			continue
+		}
+	}
+	boards.No_of_tables = count
+	return
+}
+
+func calcAllTables(filename string) {
+	var f *os.File
+	var err error
+	var boards interop.DdTableDealsPBN
+	f, err = os.Open(filename)
+	if err == nil {
+		defer f.Close()
+		boards = readPBN(f)
+	}
+	trumpfilter := make([]int32, interop.NUMBEROFSTRAINS)
+	var tableRes interop.DdTablesRes
+	res := interop.CalcAllTablesPbn(&boards, -1, &trumpfilter[0], &tableRes, nil)
+	if res == interop.RETURN_NO_FAULT {
+		println("Success")
+	} else {
+		println(res)
+		return
+	}
+	println(tableRes.No_of_boards)
+	for i := range boards.No_of_tables / 2 {
+		b := tableRes.Results[i]
+		fmt.Printf("Board: %d:\n", i)
+
+		for n, tr := range b.Res_table {
+			fmt.Printf("Trump: %c: ", convertStrainToChar(n))
+			for _, r := range tr {
+				fmt.Printf("%d ", r)
+			}
+			fmt.Println()
+		}
 	}
 }
 
 func main() {
-	ctx := interop.CreateSolverContext()
-	var remaincards []byte = []byte("N:T642.K9.AKT62.82 Q87.T7632.J83.74 AJ3.J85.Q7.KQJT5 K95.AQ4.954.A963")
-	playedDeal, err := solvedeal(ctx, interop.EAST, interop.SPADES, remaincards)
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		printsolveddeal(playedDeal)
-	}
+	//	calcAllTables("../2071_Zitting 1 [10-Sep].pbn")
+	solveBoard("N:KT76.A5.85.K8642 A2.KT63.AK92.AQJ QJ843.J84.QT74.7 95.Q972.J63.T953")
 }
