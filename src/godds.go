@@ -276,7 +276,7 @@ func calcAllTables(filename string) {
 		return
 	}
 	println(tableRes.No_of_boards)
-	for i := range boards.No_of_tables / 2 {
+	for i := range boards.No_of_tables {
 		b := tableRes.Results[i]
 		fmt.Printf("Board: %d:\n", i)
 
@@ -291,6 +291,6 @@ func calcAllTables(filename string) {
 }
 
 func main() {
-	//	calcAllTables("../2071_Zitting 1 [10-Sep].pbn")
-	solveBoard("N:KT76.A5.85.K8642 A2.KT63.AK92.AQJ QJ843.J84.QT74.7 95.Q972.J63.T953")
+	calcAllTables("../2071_Zitting 1 [26-Okt].pbn")
+	// solveBoard("N:KT76.A5.85.K8642 A2.KT63.AK92.AQJ QJ843.J84.QT74.7 95.Q972.J63.T953")
 }
