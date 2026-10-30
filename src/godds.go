@@ -266,7 +266,7 @@ func calcAllTables(filename string) {
 		defer f.Close()
 		boards = readPBN(f)
 	}
-	trumpfilter := make([]int32, interop.NUMBEROFSTRAINS)
+	var trumpfilter [interop.NUMBEROFSTRAINS]int32
 	var tableRes interop.DdTablesRes
 	res := interop.CalcAllTablesPbn(&boards, -1, &trumpfilter[0], &tableRes, nil)
 	if res == interop.RETURN_NO_FAULT {
@@ -275,7 +275,6 @@ func calcAllTables(filename string) {
 		println(res)
 		return
 	}
-	println(tableRes.No_of_boards)
 	for i := range boards.No_of_tables {
 		b := tableRes.Results[i]
 		fmt.Printf("Board: %d:\n", i)
